@@ -1,9 +1,9 @@
 const { send } = require("./request.js");
 const { read } = require("./response.js");
 
-function request(url, data) {
+function makeRequest(url, data) {
   send(url, data);
   return read();
 }
 
-console.log(request("https://google.com", "hello"));
+console.log(makeRequest("https://google.com", "hello"));
