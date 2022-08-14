@@ -18,7 +18,13 @@ const friends = [
     name: "Prabesh",
   },
 ];
-
+app.use((req, res, next) => {
+  const start = Date.now();
+  console.log(`${req.method} ${req.url}`);
+  next();
+  const delta = Date.now() - start;
+  console.log(`Request completed in ${delta}ms`);
+});
 app.get("/friends", (req, res) => {
   res.json(friends);
 });
