@@ -1,23 +1,13 @@
 const express = require("express");
+const path = require("path");
+
+const friendsRouter = require("./routers/friends.router");
+const messagesRouter = require("./routers/messages.router");
 
 const app = express();
 
 const PORT = 3000;
 
-const friends = [
-  {
-    id: 0,
-    name: "Abhishek",
-  },
-  {
-    id: 1,
-    name: "Binod",
-  },
-  {
-    id: 2,
-    name: "Prabesh",
-  },
-];
 app.use((req, res, next) => {
   const start = Date.now();
   console.log(`${req.method} ${req.url}`);
@@ -25,19 +15,13 @@ app.use((req, res, next) => {
   const delta = Date.now() - start;
   console.log(`Request completed in ${delta}ms`);
 });
-app.get("/friends", (req, res) => {
-  res.json(friends);
-});
 
-app.get("/friends/:friendId", (req, res) => {
-  const friendId = +req.params.friendId;
-  const friend = friends[friendId];
-  if (friend) {
-    res.status(200).json(friend);
-  } else {
-    res.status(404).json({ error: "Sorry you got no friend :)>" });
-  }
-});
+app.use("/app", express.static(path.join(__dirname, "public")));
+app.use(express.json());
+
+app.use("/friends", friendsRouter);
+
+app.use("/messages", messagesRouter);
 
 app.listen(PORT, () => {
   console.log(`Server listening to port ${PORT}`);
